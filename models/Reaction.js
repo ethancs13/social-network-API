@@ -1,12 +1,10 @@
 const { Schema, Types } = require('mongoose');
 
-// Schema that is used for reference for thoughtsSchema.
-const reactionSchema = new Schema(
+// Define reaction schema
+const ReactionSchema = new Schema(
   {
     reactionId: {
-      // Schema.Types is used to define data type.
-      type: Schema.Types.ObjectId,
-      // Sets default option to return a new ObjectId. Uses Types.ObjectId() since you need to call function to create and return new ObjectId.
+      type: Types.ObjectId, // Use the imported Types for consistency
       default: () => new Types.ObjectId(),
     },
     reactionBody: {
@@ -20,7 +18,6 @@ const reactionSchema = new Schema(
     },
     createdAt: {
       type: Date,
-      // Sets default to current date timestamp
       default: Date.now,
     },
   },
@@ -32,4 +29,4 @@ const reactionSchema = new Schema(
   }
 );
 
-module.exports = reactionSchema;
+module.exports = ReactionSchema; // Use consistent naming for exported schema

@@ -1,9 +1,8 @@
-// Imports Schema and model functions from mongoose
 const { Schema, model } = require('mongoose');
-const reactionSchema = require('./Reaction');
+const ReactionSchema = require('./Reaction');
 
-// New schema for thoughtsSchema
-const thoughtSchema = new Schema(
+// Define thought schema
+const ThoughtSchema = new Schema(
   {
     thoughtText: {
       type: String,
@@ -19,27 +18,22 @@ const thoughtSchema = new Schema(
       type: String,
       required: true,
     },
-    // Array of nested/subdocuments documents from reactionSchema in Reaction.js.
-    reactions: [reactionSchema],
+    reactions: [ReactionSchema], // Use singular for consistency
   },
   {
     toJSON: {
-      // Virtuals are properties not stored in MongoDB, used for computed properties.
-      // Virtuals aren't included in JSON by default so have to set to true.
       virtuals: true,
-      // Getters let you format/manipulate data for use
-      // Getters also aren't included by default so have to set to true.
       getters: true,
     },
   }
 );
 
-// Virtual that retrieves length of specific user reactions array
-thoughtSchema.virtual('reactionCount').get(function () {
-  return `${this.reactions.length}`;
+// Define virtual to retrieve the length of the reactions array
+ThoughtSchema.virtual('reactionCount').get(function () {
+  return this.reactions.length.toString(); // Return as string for consistency
 });
 
-// Initializes thought model
-const Thought = model('thought', thoughtSchema);
+// Create and export the Thought model
+const Thought = model('Thought', ThoughtSchema);
 
 module.exports = Thought;

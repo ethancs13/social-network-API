@@ -7,8 +7,9 @@ const usernames = [
     'AnnaClarkson',
     'BrianTaylor',
     'MatthewCarter',
-];
-const thoughts = [
+  ];
+  
+  const thoughts = [
     'Learning a new skill is a journey of self-discovery.',
     'Coding styles may differ, but the logic is a universal language.',
     'I correct autocorrect more than it corrects me.',
@@ -17,8 +18,9 @@ const thoughts = [
     'If tomatoes are fruit, then ketchup is jam.',
     "Only one sock goes missing because if both did, you wouldn't notice.",
     'Does a straw have one hole, or two?',
-];
-const reactions = [
+  ];
+  
+  const reactions = [
     "That's incredible!",
     'Pretty neat.',
     "I'm impressed!",
@@ -27,59 +29,60 @@ const reactions = [
     'Really? Is that true?',
     "That's hard to believe.",
     'That is not true.',
-];
-
-const emails = ['gmail', 'hotmail', 'yahoo', 'outlook'];
-
-// Gets random item from array.
-const randomArrayItem = (arr) => arr[Math.floor(Math.random() * arr.length)];
-
-// Returns random user and email associated with them.
-const randomUsers = (numUsers) => {
+  ];
+  
+  const emails = ['gmail', 'hotmail', 'yahoo', 'outlook'];
+  
+  // Gets random item from array.
+  const randomArrayItem = (arr) => arr[Math.floor(Math.random() * arr.length)];
+  
+  const randomUsers = (numUsers) => {
     const usersArray = [];
+    // Create a copy of the usernames array using spread operator so original data isnt deleted.
+    const usernamesCopy = [...usernames];
+  
     for (let i = 0; i < numUsers; i++) {
-        const randomUsername = randomArrayItem(usernames);
-        const randomEmail = `${randomUsername}@${randomArrayItem(emails)}.com`;
-
-        usersArray.push({
-            username: randomUsername,
-            email: randomEmail,
-        });
+      // Gets a random index number from the copied array
+      const index = Math.floor(Math.random() * usernamesCopy.length);
+  
+      // Selects current index number
+      const sameUsername = usernamesCopy[index];
+  
+      usersArray.push({
+        username: sameUsername,
+        email: `${sameUsername}@${randomArrayItem(emails)}.com`,
+      });
+  
+      // Remove the used username from the array so it isn't repeated.
+      usernamesCopy.splice(index, 1);
     }
+  
     return usersArray;
-};
-
-// Returns random user and reaction.
-const randomReactions = (numReactions) => {
+  };
+  
+  // Returns random user and reaction.
+  const randomReactions = (numReactions) => {
     const reactionsArray = [];
     for (let i = 0; i < numReactions; i++) {
-        reactionsArray.push({
-            username: randomArrayItem(usernames),
-            reaction: randomArrayItem(reactions),
-        });
+      reactionsArray.push({
+        username: randomArrayItem(usernames),
+        reactionBody: randomArrayItem(reactions),
+      });
     }
     return reactionsArray;
-};
-
-// Returns random thought with 3 random usernames and reactions.
-const randomThoughts = (numThoughts) => {
+  };
+  
+  // Returns random thought with 3 random usernames and reactions.
+  const randomThoughts = (numThoughts) => {
     const thoughtsArray = [];
     for (let i = 0; i < numThoughts; i++) {
-        const thought = {
-            thoughtText: randomArrayItem(thoughts),
-            usersAndReactions: [],
-        };
-
-        for (let j = 0; j < 3; j++) {
-            thought.usersAndReactions.push({
-                username: randomArrayItem(usernames),
-                reaction: randomArrayItem(reactions),
-            });
-        }
-
-        thoughtsArray.push(thought);
+      thoughtsArray.push({
+        thoughtText: randomArrayItem(thoughts),
+        username: randomArrayItem(usernames),
+        reactions: randomReactions(3),
+      });
     }
     return thoughtsArray;
-};
-
-module.exports = { randomUsers, randomReactions, randomThoughts };
+  };
+  
+  module.exports = { randomUsers, randomThoughts };
